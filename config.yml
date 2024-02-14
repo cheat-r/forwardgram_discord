@@ -1,0 +1,16 @@
+# Telegram App configuration. Obtain these at https://my.telegram.org. (https://core.telegram.org/api/obtaining_api_id)
+api_id: 12345678 # No quotes
+api_hash: 's0m3l0n5nam3idkandmaybenumbers69' # With quotes
+
+# Discord Webhook URL. In other words, to which channel your "bot" should post. (https://support.discord.com/hc/en-us/articles/228383668-Intro-to-Webhooks)
+discord_webhook_url: 'https://discord.com/api/webhooks/channelID/webhookID' # With quotes
+
+# The channel(s) that you'd like to forward messages from. Input Telegram channel name(s) here.
+# The user running the client must have these channels present on its dialogs.
+input_channel_names:
+  - "cheat_r's Junkyard" # If channel name has apostrophe, enclose it in double quotes
+  - 'Another One, if you want to'
+  - 'repeat until satisfied' # ...or you can leave only one channel and call it a day
+
+# If you're parsing multiple channels, you can turn on source channel display in webhook embed.
+channel_source: True # Boolean [True / False]
