@@ -41,6 +41,7 @@ async def handler(event):
             channel = await event.get_chat()
             embed = disnake.Embed()
             embed.set_author(name='Forwarded from '+channel.title)
+        else: embed = None
         if event.message.media:
           media = await event.message.download_media()
           file = disnake.File(fp=media)
