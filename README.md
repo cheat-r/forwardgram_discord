@@ -1,11 +1,13 @@
 ```
-If you have questions and/or problems, ~~you have skill issue~~ you can create Issue or fork this repo and try to fix it yourself.
+If you have questions and/or problems, you have skill is- uhh, I mean...
+You can create Issue or fork this repo and try to fix it yourself.
 I posted this project just so my work won't be wasted.
 ```
 <img src="resources/itjustworks.png">
+
 # <img src="resources/bricksmol.gif"> Forwardgram: Discord Webhook Edition — Forward Telegram Messages to Discord
 
-<img src="https://img.shields.io/badge/Skill-issue-red"> 
+<img src="https://img.shields.io/badge/Skill-issue-red"> <img src="https://img.shields.io/badge/L-Ratio-yellow"> <img src="https://img.shields.io/badge/Touch-grass-salad">
 
 ## Description
 Forwardgram is a script that uses your Telegram account for parsing new messages from one or more Telegram channels and forwards them to Discord channel using webhook. There's nothing you need to register (besides your own accounts)! Simple setup! Everything works out of a box! (does that even happen?)
