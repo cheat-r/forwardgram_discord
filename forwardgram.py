@@ -5,6 +5,9 @@ import yaml
 import disnake
 from disnake import Webhook
 import aiohttp
+import asyncio
+wait = False
+files = []
 
 with open('config.yml', 'rb') as f:
     config = yaml.safe_load(f)
@@ -27,28 +30,31 @@ if input_channels_entities == []:
 # Grabbing new messages
 @client.on(events.NewMessage(chats=input_channels_entities))
 async def handler(event):
-    # If the message contains a URL, parse and send Message + URL
-    try:
-        parsed_response = (event.message.message + '\n' + event.message.entities[0].url )
-        parsed_response = ''.join(parsed_response)
-    # ...or we only send Message    
-    except:
-        parsed_response = event.message.message
-
+    #! Known flaw: italic converts to underline because of different formatting of Telegram and Discord
+    parsed_response = event.message.text
     async with aiohttp.ClientSession() as session:
+        global wait, files
         webhook = Webhook.from_url(config["discord_webhook_url"], session=session)
+        embed = disnake.Embed()
         if config["channel_source"]:
             channel = await event.get_chat()
-            embed = disnake.Embed()
-            embed.set_author(name='Forwarded from '+channel.title)
+            embed.set_footer(text='Forwarded from '+channel.title)
         else: embed = None
-        if event.message.media:
+        if event.message.media and not event.web_preview:
           media = await event.message.download_media()
           file = disnake.File(fp=media)
-          await webhook.send(parsed_response,file=file,embed=embed)
           os.remove(media)
-        else:
-          await webhook.send(parsed_response,embed=embed)
+          wait = True
+          files.append(file)
+          await asyncio.sleep(1)
+          if wait == True:
+              wait = False
+              if parsed_response:
+                await webhook.send(parsed_response,embed=embed,files=files)
+              else:
+                await webhook.send(embed=embed,files=files)
+              files = []
+        else: await webhook.send(parsed_response,embed=embed)
 
 print("Init complete; Starting listening for messages...\n------")
 client.run_until_disconnected()
