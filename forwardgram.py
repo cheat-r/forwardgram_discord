@@ -97,20 +97,21 @@ async def handler(event):
                 embed.set_author(name=f'Sent by {event.message.post_author}')
         else: embed = None
         if event.message.media and not event.web_preview:
-            media = await event.message.download_media()
-            file = disnake.File(fp=media)
-            os.remove(media)
+            file_path = f"media/{event.message.id}.jpg"  # adjust the file path as needed
+            await event.message.download_media(file=file_path)
+            file = disnake.File(fp=file_path)
             wait = True
             files.append(file)
             await asyncio.sleep(1)
             if wait == True:
                 wait = False
                 if msg:
-                    await webhook.send(msg,embed=embed,files=files)
+                    await webhook.send(msg, embed=embed, files=files)
                 else:
-                    await webhook.send(embed=embed,files=files)
+                    await webhook.send(embed=embed, files=files)
                 files = []
-        else: await webhook.send(msg,embed=embed)
+                os.remove(file_path)  # remove the file after sending
+        else: await webhook.send(msg, embed=embed)
 
 print("Init complete; Starting listening for messages...\n------")
 client.run_until_disconnected()
