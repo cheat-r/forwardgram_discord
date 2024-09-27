@@ -22,7 +22,7 @@ channels = []
 if not (False in config['channel_names']):
     print("You're using channel names in your config!\nWe recommend using channel IDs as they're rename and repeat-proof.\nYou can get it either by enabling experimental \"Show Peer IDs\" setting in desktop or, if you're on mobile (for some reason), by using modded client and enabling it there.\nMake sure to use Telegam API, not Bot API!\n") 
 for d in client.iter_dialogs():
-    if not (False in config['channel_names']):
+    if (False in config['channel_names']):
         if d.entity.id in config['channel_ids']:
             channels.append(InputChannel(d.entity.id, d.entity.access_hash))
     if not (False in config['channel_names']):
@@ -82,6 +82,7 @@ async def handler(event):
 @client.on(events.NewMessage(chats=channels))
 async def handler(event):
     msg = event.message.text
+    if msg.count("__") >= 2: msg = msg.replace("__", "*")
     async with aiohttp.ClientSession() as session:
         global wait, files
         webhook = Webhook.from_url(config['discord_webhook_url'], session=session)
