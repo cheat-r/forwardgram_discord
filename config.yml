@@ -17,4 +17,4 @@ channel_names:
   - 'repeat until satisfied' # ...or you can leave only one channel and call it a day
 
 # If you're parsing multiple channels, you can turn on source channel display in webhook embed.
-channel_source: True
+output_channel_source: True
