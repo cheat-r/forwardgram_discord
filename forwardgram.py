@@ -10,6 +10,7 @@ from disnake import Webhook
 # Crutch for attaching attaches in same message as they were sent, because Telegram doesn't do that for some reason 
 wait = False
 files = []
+paths = []
 
 with open('config.yml', 'rb') as f:
     config = yaml.safe_load(f)
@@ -61,7 +62,7 @@ async def handler(event):
     txt = msg.text
     if txt.count("__") >= 2: txt = txt.replace("__", "*")
     async with aiohttp.ClientSession() as session:
-        global wait, files
+        global wait, files, paths
         webhook = Webhook.from_url(config['channel_ids'][msg.peer_id.channel_id] if msg.peer_id.channel_id in config['channel_ids'] and config['channel_ids'][msg.peer_id.channel_id] != None else config['default_webhook'], session=session)
         embed = disnake.Embed()
         if msg.reply_to:
@@ -75,6 +76,7 @@ async def handler(event):
         username = f'{channel.title}' + f' ({msg.post_author})' if msg.post_author else ''
         if msg.media and not event.web_preview:
             media = await msg.download_media()
+            paths.append(media)
             file = disnake.File(fp=media)
             wait = True
             files.append(file)
@@ -86,7 +88,9 @@ async def handler(event):
                 else:
                     await webhook.send(embed=embed, files=files, username=username)
                 files = []
-                os.remove(media)
+                for p in paths:
+                    os.remove(p)
+                media = []
         else: await webhook.send(txt, embed=embed, username=username)
 
 print("Init complete; Starting listening for messages...\n------")
