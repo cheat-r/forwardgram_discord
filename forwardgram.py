@@ -70,7 +70,7 @@ async def handler(event):
             embed.description = f'>>> {reply.text}'+('\n' if reply.text else '')+('(Sticker)' if reply.sticker else '(Poll)' if reply.poll else '(Voice)' if reply.voice else '(Gif)' if reply.gif else '(Document)' if reply.document else '(Media)' if reply.media else '')
         elif msg.forward:
             channel = await msg.forward.get_chat()
-            embed.set_footer(text=f'Forwarded from {channel.title}' + f' ({msg.forward.post_author})' if msg.forward.post_author else '')
+            embed.set_footer(text=f'Forwarded from {channel.title}' + (f' ({msg.forward.post_author})' if msg.forward.post_author else ''))
         else: embed = None
         channel = await event.get_chat()
         username = f'{channel.title}' + f' ({msg.post_author})' if msg.post_author else ''
